@@ -69,29 +69,40 @@ class Board:
 					num[f.num] = m.num
 		return bo, num
 		
-	def printBoard(self): # a crude representation of the board on screen
-	    fs = self.fields
-	    s7 = fs[7].fieldToString()
-	    s8 = fs[8].fieldToString()
-	    s9 = fs[9].fieldToString()
-	    print(s7+" "*(12-len(s7)) + "|" + s8 + " "*(12-len(s8)) +"|" + s9)
-	    print("------------------------------------------")
-	    s4 = fs[4].fieldToString()
-	    s5 = fs[5].fieldToString()
-	    s6 = fs[6].fieldToString()
-	    print(s4+" "*(12-len(s4)) + "|" +s5 + " "*(12-len(s5)) +"|" + s6)
-	    
-	    print("------------------------------------------")
-	    s1 = fs[1].fieldToString()
-	    s2 = fs[2].fieldToString()
-	    s3 = fs[3].fieldToString()
-	    print(s1+" "*(12-len(s1)) + "|" +s2 + " "*(12-len(s2)) +"|" + s3)
-	    
-	    print("------------------------------------------")
-	    """
-		for f in self.fields:
-			print("Field" + str(f.num))
-			print(f.fieldToString())"""
+	def printBoard(self,screen): # a crude representation of the board on screen
+		screen.cls()
+	    	fs = self.fields
+	    	s7 = fs[7].fieldToString()
+		screen.printmarks(7,s7)
+	    	s8 = fs[8].fieldToString()
+		screen.printmarks(8,s8)
+	    	s9 = fs[9].fieldToString()
+		screen.printmarks(9,s9)
+	    	#print(s7+" "*(12-len(s7)) + "|" + s8 + " "*(12-len(s8)) +"|" + s9)
+	    	#print("------------------------------------------")
+	    	s4 = fs[4].fieldToString()
+		screen.printmarks(4,s4)
+	    	s5 = fs[5].fieldToString()
+		screen.printmarks(5,s5)
+	    	s6 = fs[6].fieldToString()
+		screen.printmarks(6,s6)
+	    	#print(s4+" "*(12-len(s4)) + "|" +s5 + " "*(12-len(s5)) +"|" + s6)
+	    	#
+	    	#print("------------------------------------------")
+	    	s1 = fs[1].fieldToString()
+		screen.printmarks(1,s1)
+	    	s2 = fs[2].fieldToString()
+		screen.printmarks(2,s2)
+	    	s3 = fs[3].fieldToString()
+		screen.printmarks(3,s3)
+		screen.multiverse()
+	    	#print(s1+" "*(12-len(s1)) + "|" +s2 + " "*(12-len(s2)) +"|" + s3)
+	    	#
+	    	#print("------------------------------------------")
+	    	#"""
+	    	#    for f in self.fields:
+	    	#    	print("Field" + str(f.num))
+	    	#    	print(f.fieldToString())"""
 			
 	def isSpaceFree(self, move):
 		# Return true if the passed move is free on the passed board.
@@ -309,28 +320,7 @@ class FinMark:
 		fm = FinMark(self.letter, self.pos, self.num)
 		return fm
 	
-def getPlayerMove(board):
-	# Let the player type in their move.
-	move = ' '
-	move2 = ' '
-	while ((move not in '1 2 3 4 5 6 7 8 9'.split() or move2 not in '1 2 3 4 5 6 7 8 9'.split()) and move == move2) or not board.isSpaceFree(int(move)) or not board.isSpaceFree(int(move2)):
-		print('What is your next move? (1-9)')
-		move = raw_input()
-		print('Second field? (1-9)')
-		move2 = raw_input()
-	return int(move), int(move2)
       
-def getPlayerCollapse(board, lastMark):
-    # Let the player type in their preferred collapse target
-    print("You may collapse letter {0}{1} on field {2} or {3}".format(lastMark.letter, lastMark.num, lastMark.pos, lastMark.otherpos))
-    choice = None
-    while (not choice or choice not in [lastMark.pos, lastMark.otherpos]):
-      print('What choice do you want to make? ({0}, {1})'.format(lastMark.pos, lastMark.otherpos))
-      choice = int(raw_input())
-    if choice == lastMark.pos:
-      return choice, lastMark.otherpos
-    else:
-      return choice, lastMark.pos
       
 def getComputerMove_Random(board):
 	l = []
@@ -391,10 +381,6 @@ def whoGoesFirst():
 	else:
 		return 'player 1'
 
-def playAgain():
-	# This function returns True if the player wants to play again, otherwise it returns False.
-	print('Do you want to play again? (yes or no)')
-	return raw_input().lower().startswith('y')
 def valueOfPosition(board, maxplayerLetter, minplayerLetter):
 	wincond = [board.hasWon(maxplayerLetter), board.hasWon(minplayerLetter)]
 	if wincond[0][0]: # if player 1 has Tic Tac Toe
@@ -452,12 +438,6 @@ def minimax(board, steps, totalNumSteps, maximizingPlayer, playerLetter, current
 			minVal = min(val, minVal)
 		return (minVal, savedMoves)
 
-def getNumRecursions():
-	val = ""
-	while val not in "1 2 3 4 5 6 7 8 9 10".split(" "):
-		print("How many recursions? (1-10)")
-		val = raw_input()
-	return int(val)
 
 """
 b = Board()
